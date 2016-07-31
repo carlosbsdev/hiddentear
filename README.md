@@ -12,8 +12,8 @@ It's a ransomware-like file crypter sample which can be modified for specific ed
 * Sends encryption key to a server.
 * Encrypted files can be decrypt in decrypter program with encryption key.
 * Creates a text file in Desktop with given message.
-* Small file size (12 KB)
-* Doesn't detected to antivirus programs (15/08/2015) http://nodistribute.com/result/6a4jDwi83Fzt
+* Small file size (207 KB)
+* Detected by 13/35 antivirus programs (1/08/2016) http://NoDistribute.com/result/yQI70xZO1RfCMjWBAD6tuNFsimLGT3
 
 **Demonstration Video**
 
