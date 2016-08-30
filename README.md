@@ -44,6 +44,12 @@ using (var client = new WebClient())
 ```
 var validExtensions = new[]{".txt", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".odt", ".jpg", ".png", ".csv", ".sql", ".mdb", ".sln", ".php", ".asp", ".aspx", ".html", ".xml", ".psd"};
 ```
+
+**Example GUI decrypter**
+
+![alt tag](http://i63.tinypic.com/111rwg6.png)
+
+
 **Article: Destroying The Encryption of Hidden Tear Ransomware** 
 
 http://www.utkusen.com/blog/destroying-the-encryption-of-hidden-tear-ransomware.html
